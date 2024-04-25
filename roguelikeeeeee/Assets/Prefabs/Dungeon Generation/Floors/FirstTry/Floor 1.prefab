@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8524948857285882687
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2821113798633642384}
+  - component: {fileID: 995616208597161316}
+  m_Layer: 0
+  m_Name: Floor 1
+  m_TagString: Floor
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2821113798633642384
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524948857285882687}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &995616208597161316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524948857285882687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e5d05c06ac49ad449977f269c467c65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomPrefab:
+  - {fileID: 6092968568781044968, guid: 4401faebcee384a4f986ea3b543b136f, type: 3}
+  - {fileID: 6092968568781044968, guid: 707822517569d944081fc7762490031a, type: 3}
+  bossRoomPrefab: {fileID: 6092968568781044968, guid: 0d2aa1d1efe724d46b1ff50470fba201, type: 3}
+  swordRoomPrefab: {fileID: 6092968568781044968, guid: f8ef71b6b3eeed9408eff090a3d0c534, type: 3}
+  exitRoomPrefab: {fileID: 6092968568781044968, guid: 067b7ff1e81c137468bc9c7f61b25c7f, type: 3}
+  maxRooms: 12
+  maxSwordRooms: 2
+  roomWidth: 54
+  roomHeight: 42

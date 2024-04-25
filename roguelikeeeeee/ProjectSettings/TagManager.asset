@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Sword
+  - Room
+  - Door
+  - Darkness
+  - Mob
+  - Block
+  - Floor
+  - RoomSpawnPoint
+  - Boss
+  - RoomMark
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Player
+  - Water
+  - UI
+  - Mob
+  - Walls
+  - Minimap
+  - Darkness
+  - Sword Item
+  - Particles
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Darkness
+    uniqueID: 3735685355
+    locked: 0
+  - name: UI
+    uniqueID: 2267519761
+    locked: 0
+  - name: MinimapMarks
+    uniqueID: 4190159785
+    locked: 0
