@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     static public PlayerController player;
     public float health;
-    public float initialStaticMoveSpeed;
+    public float maxSpeed;
     public float currentSpeed;
     [HideInInspector] public float moveSpeedWithoutSword;
     [HideInInspector] public float moveSpeedWithSword;
@@ -51,15 +51,23 @@ public class PlayerController : MonoBehaviour
         {
             //------------------------- Calculation of the speed (плавный разгон)
             //Параметры: 1. от какой скорости, 2. До какой скорости, 3. За какое время
-            currentVelocity = Vector2.Lerp(currentVelocity, moveDirection * initialStaticMoveSpeed, Time.deltaTime * smoothTimeToStop * initialStaticMoveSpeed);
+            currentVelocity = Vector2.Lerp(currentVelocity, moveDirection * maxSpeed, Time.deltaTime * smoothTimeToStop * maxSpeed);
             rb.velocity = currentVelocity;
+
+            Vector2 playerVelocity = transform.GetComponent<Rigidbody2D>().velocity;
+            Vector2 predictedPlayerPosition = (Vector2)transform.position + playerVelocity * 1 * 1;
+            Vector2 directionToPredictedPosition = (predictedPlayerPosition - (Vector2)transform.position).normalized;
+            float angle = Mathf.Atan2(directionToPredictedPosition.y, directionToPredictedPosition.x) * Mathf.Rad2Deg + 90f;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
         }
         else
         {
             //------------------------- Calculation of the speed (плавная остановка)
             //Параметры: 1. от какой скорости, 2. До какой скорости, 3. За какое время
-            currentVelocity = Vector2.Lerp(currentVelocity, Vector2.zero, Time.deltaTime * smoothTimeToStop * initialStaticMoveSpeed);
+            currentVelocity = Vector2.Lerp(currentVelocity, Vector2.zero, Time.deltaTime * smoothTimeToStop * maxSpeed);
             rb.velocity = currentVelocity;
+
+            
         }
     }
 
@@ -71,8 +79,8 @@ public class PlayerController : MonoBehaviour
 
         // Calculate the movement direction
         Vector2 movementDirection = new Vector2(horizontal, vertical).normalized;
-        currentSpeed = rb.velocity.magnitude;
-        smoothTimeToStop = Mathf.Lerp(0.35f, 0.75f, currentSpeed);
+        currentSpeed = Mathf.RoundToInt(rb.velocity.magnitude);
+        smoothTimeToStop = Mathf.Lerp(0.35f, 0.45f, currentSpeed);
 
         if (horizontal != 0 && movementDirection != Vector2.zero || vertical != 0 && movementDirection != Vector2.zero) // если пользователь нажимает на кнопки движения на клавиатуре(если двигается)
         {
@@ -147,25 +155,25 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionStay2D(Collision2D other)
     {
         #region Mobs
-        if (other.collider.gameObject.CompareTag("Mob"))
+        if (other.collider.gameObject.CompareTag("Mob") || other.collider.gameObject.CompareTag("Boss"))
         {
-            if (other.transform.name.Substring(0, other.transform.name.Length >= 7 ? 7 : 0) == "Regular" && other.gameObject.CompareTag("Mob"))
+            if (other.transform.name.Substring(0, other.transform.name.Length >= 7 ? 7 : 0) == "Regular")
             {
                 if (Time.time > hitTime)
                 {
                     health -= 0.25f;
-                    initialStaticMoveSpeed = Mathf.LerpUnclamped(0f, 10f, Mathf.Clamp01(health));
+                    maxSpeed = Mathf.LerpUnclamped(0f, 10f, Mathf.Clamp01(health));
                     hitTime = Time.time + hitCooldown;
                     GameObject playerHitParticlesPrefabClone = Instantiate(playerHitParticlesPrefab, transform.position, Quaternion.identity, transform.parent);
                     Destroy(playerHitParticlesPrefabClone, 1.5f);
                 }
             }
-            if (other.transform.name.Substring(0, other.transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" && other.gameObject.CompareTag("Mob"))
+            if (other.transform.name.Substring(0, other.transform.name.Length >= 12 ? 12 : 0) == "Regular Boss")
             {
                 if (Time.time > hitTime)
                 {
                     health -= 0.4f;
-                    initialStaticMoveSpeed = Mathf.LerpUnclamped(0f, 10f, Mathf.Clamp01(health));
+                    maxSpeed = Mathf.LerpUnclamped(0f, 10f, Mathf.Clamp01(health));
                     hitTime = Time.time + hitCooldown;
                     GameObject playerHitParticlesPrefabClone = Instantiate(playerHitParticlesPrefab, transform.position, Quaternion.identity, transform.parent);
                     Destroy(playerHitParticlesPrefabClone, 1.5f);
@@ -200,17 +208,5 @@ public class PlayerController : MonoBehaviour
             other.gameObject.GetComponent<Animator>().SetBool("DarknessEnabled", false);
         }
         #endregion
-        //Delete Room Mark On Enter
-        if (other.gameObject.CompareTag("Room"))
-        {
-             //Проверяй есть ли у комнаты (дочерний)объект MinimapIcon, если есть то удаляй его
-            if (other.gameObject.CompareTag("Room") )
-            {
-
-            }
-
-            Destroy(GameObject.Find("MinimapIcon"));
-
-        }
     }
 }

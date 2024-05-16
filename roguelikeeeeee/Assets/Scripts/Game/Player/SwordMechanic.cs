@@ -11,7 +11,7 @@ public class SwordMechanic : MonoBehaviour
 
     [HideInInspector] public float attackCooldown;
     [HideInInspector] public float attackSpeed;
-    [HideInInspector] public float swordWeight;
+    [HideInInspector] public float swordWeight; 
     [HideInInspector] public ShakeData shakeEffect;
     [HideInInspector] public SwordItem swordItem;
     //[HideInInspector] public SwordSpawner swordSpawner;
@@ -57,7 +57,7 @@ public class SwordMechanic : MonoBehaviour
     private void Idle()
     {
         // Check for input to initiate the attack
-        if (Input.GetKey(KeyCode.Mouse0) && attackCooldownTimer <= 0.0f && !PauseControls.pauseIsOn)
+        if (Input.GetKey(KeyCode.Mouse0) && attackCooldownTimer <= 0 && !PauseControls.pauseIsOn)
         {
             animator.Play("isAttack");
             currentAttackState = AttackState.Attack;
@@ -119,7 +119,7 @@ public class SwordMechanic : MonoBehaviour
 
             //returning the movement speed because of dropping sword
             PlayerController.player.moveSpeedWithoutSword = Mathf.Abs(PlayerController.player.moveSpeedWithSword + GameObject.FindGameObjectWithTag("Sword").GetComponent<SwordRaycasting>().swordWeight);
-            PlayerController.player.initialStaticMoveSpeed = PlayerController.player.moveSpeedWithoutSword;
+            PlayerController.player.maxSpeed = PlayerController.player.moveSpeedWithoutSword;
             PlayerSkills.lastMoveSpeed = PlayerController.player.moveSpeedWithoutSword;
 
             PlayerController.player.swordEquipped = false;

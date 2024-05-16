@@ -1,3 +1,4 @@
+﻿using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
@@ -7,9 +8,14 @@ public class Mob : MonoBehaviour
 {
     private Transform player;
     private Rigidbody2D rb;
+
+    //вондер надо сделать, чтобы не дёргался когда видит игрока, чтобы не вертелся когда не видит игрока, чтобы медленно туды суды делал когда игрока нет, и всё
+    //вондер если игрок не в комнате, иначе нападай на игрока(точнее включай поиск игрока)
     private float wanderTimer;
+    private bool wanderFlag = false;
+
     private float dashTimer;
-    private bool isDashing = false;
+    //private bool isDashing = false; // можно сделать дэш такой же как у игрока
 
     public float farRadius;
     public float closeRadius;
@@ -34,14 +40,14 @@ public class Mob : MonoBehaviour
     public CircleCollider2D mobCloseDistance;
     */
 
-    [HideInInspector] public float onMobDamageCooldownTimer = 0f;
-    [HideInInspector] public float onMobDamageCooldown = 0.3f;
-    [HideInInspector] public float deathParticlesDuration;
-    [HideInInspector] public GameObject mobDeathParticlesPrefab;
-    [HideInInspector] public ParticleSystem mobDeathParticleSystem;
-    [HideInInspector] public float hitParticlesDuration;
-    [HideInInspector] public GameObject mobHitParticlesPrefab;
-    [HideInInspector] public ParticleSystem mobHitParticleSystem;
+    /*[HideInInspector] */public float onMobDamageCooldownTimer = 0f;
+    /*[HideInInspector] */public float onMobDamageCooldown = 0.3f;
+    /*[HideInInspector] */public float deathParticlesDuration;
+    /*[HideInInspector] */public GameObject mobDeathParticlesPrefab;
+    /*[HideInInspector] */public ParticleSystem mobDeathParticleSystem;
+    /*[HideInInspector] */public float hitParticlesDuration;
+    /*[HideInInspector] */public GameObject mobHitParticlesPrefab;
+    /*[HideInInspector] */public ParticleSystem mobHitParticleSystem;
 
     private void Awake()
     {
@@ -63,7 +69,7 @@ public class Mob : MonoBehaviour
 
         attackRadius = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? attackRadius * 1.5f : attackRadius;
         farRadius = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? farRadius * 1.5f : farRadius;
-        closeRadius = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? closeRadius * 1.25f : closeRadius;
+        closeRadius = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? closeRadius * 1.05f : closeRadius;
     }
 
     private void Update()
@@ -77,7 +83,6 @@ public class Mob : MonoBehaviour
         {
             MobDeath();
         }
-
         ChasingWithRaycast();
     }
 
@@ -149,19 +154,19 @@ public class Mob : MonoBehaviour
         {
             if (c1.gameObject.CompareTag("Player"))
             {
-                //Debug.Log("you in far");
+                //Debug.Log("player in far");
                 rb.velocity = directionToPredictedPosition * initialSpeed;
                 transform.rotation = Quaternion.Euler(0, 0, angle);
             }
-
             foreach (Collider2D c2 in collidersInClose)
             {
                 if (c2.gameObject.CompareTag("Player"))
                 {
-                    //Debug.Log("you in close");
-                    rb.velocity = directionToPredictedPosition * (initialSpeed * 2.25f);
+                    //Debug.Log("player in close");
+                    rb.velocity = directionToPredictedPosition * (initialSpeed * 1.75f);
                 }
             }
+
         }
     }
     private void OnDrawGizmos()
@@ -181,9 +186,6 @@ public class Mob : MonoBehaviour
     void ChasingWithRaycast()
     {
         Vector2 mobPos = transform.position;
-        Vector2 playerPos = player.transform.position;
-        //Vector2 playerDir = (playerPos - mobPos).normalized;
-        
 
         for (int i = 0; i < rayCount; i++)
         {
@@ -194,12 +196,6 @@ public class Mob : MonoBehaviour
 
             if (hit.collider != null)
             {
-                if (hit.collider.name == "Player")
-                {
-                    Debug.DrawLine(mobPos, hit.point, new (1f, 0f, 0f, 0.75f));
-                    //Debug.Log("Hit object: " + hit.collider.gameObject.name);
-                    ChasingWithOverlap();
-                }
                 if (hit.collider.CompareTag("Block"))
                 {
                     Debug.DrawLine(mobPos, hit.point, new(1f, 165f/255f, 0f, 0.75f));
@@ -208,28 +204,33 @@ public class Mob : MonoBehaviour
                 {
                     Debug.DrawLine(mobPos, hit.point, new(255f/255f, 222f/255f, 173f/255f, 0.75f));
                 }
+                if (hit.collider.name == "Player")
+                {
+                    Debug.DrawLine(mobPos, hit.point, new(1f, 0f, 0f, 0.75f));
+                    //Debug.Log("Hit object: " + hit.collider.gameObject.name);
+                    ChasingWithOverlap();
+                }
             }
             else
             {
                 Debug.DrawRay(mobPos, direction * attackRadius, new(0f, 1f, 0f, 0.125f/2f));
-                //wanderTimer -= Time.deltaTime;
-
-                //if (wanderTimer <= 0f)
-                //{
-                //    Wandering();
-                //    wanderTimer = Random.Range(0.5f, 2.5f);
-                //}
-            }
+            }   
         }
     }
 
-    void Wandering()
+    IEnumerator Wander()
     {
-        Vector2 movementDirection = Random.insideUnitCircle.normalized;
-        float angle = Mathf.Atan2(movementDirection.y, movementDirection.x) * Mathf.Rad2Deg + 90f;
+        while (true)
+        {
+            wanderTimer = Random.Range(0.1f, 2.5f);
+            yield return new WaitForSeconds(wanderTimer);
 
-        transform.rotation = Quaternion.Euler(0, 0, angle);
-        rb.velocity = movementDirection * initialSpeed;
+            Vector2 movementDirection = Random.insideUnitCircle.normalized;
+            float angle = Mathf.Atan2(movementDirection.y, movementDirection.x) * Mathf.Rad2Deg + 90f;
+
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+            rb.velocity = movementDirection * initialSpeed;
+        }
     }
 
     private void MobDeath()

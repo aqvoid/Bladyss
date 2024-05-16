@@ -47,6 +47,7 @@ MonoBehaviour:
   bossRoom: {fileID: 6092968568781044968, guid: b682c50ee0fdc2243a3116d77a0044e5, type: 3}
   exitRoom: {fileID: 6092968568781044968, guid: 067b7ff1e81c137468bc9c7f61b25c7f, type: 3}
   swordRoom: {fileID: 6092968568781044968, guid: f8ef71b6b3eeed9408eff090a3d0c534, type: 3}
+  startRoom: {fileID: 6092968568781044968, guid: 45e048c1befb0fe4188ee7b038a44a6e, type: 3}
   maxSwordRooms: 3
   randomRooms:
   - {fileID: 6092968568781044968, guid: 7cf3df6d7e1e79b4f977176ce9986683, type: 3}

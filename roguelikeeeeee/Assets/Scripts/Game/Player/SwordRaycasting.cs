@@ -24,7 +24,7 @@ public class SwordRaycasting : MonoBehaviour
     {
         swordMechanicScript.attackCooldown = attackCooldown;
         swordMechanicScript.attackSpeed = attackSpeed;
-        swordMechanicScript.swordWeight = swordWeight;
+        swordMechanicScript.swordWeight = Mathf.Lerp(swordWeight, PlayerController.player.maxSpeed, swordWeight);
     }
     
 
@@ -45,7 +45,7 @@ public class SwordRaycasting : MonoBehaviour
             {
                 Debug.DrawLine(playerPos, hit.point, Color.red);
 
-                if (hit.collider.gameObject.CompareTag("Mob"))
+                if (hit.collider.gameObject.CompareTag("Mob") || hit.collider.gameObject.CompareTag("Boss"))
                 {
                     Mob mob = hit.collider.gameObject.GetComponent<Mob>();
 

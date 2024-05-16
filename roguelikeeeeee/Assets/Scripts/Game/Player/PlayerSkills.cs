@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerSkills : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class PlayerSkills : MonoBehaviour
     }
     private void Start()
     {
-        lastMoveSpeed = PlayerController.player.initialStaticMoveSpeed;
+        lastMoveSpeed = PlayerController.player.maxSpeed;
     }
 
     private void Update()
@@ -24,20 +24,24 @@ public class PlayerSkills : MonoBehaviour
 
     private void Dash()
     {
-        if (Input.GetKey(KeyCode.Space) && !PlayerController.player.isDashing) PlayerController.player.isDashing = true;
+        //идея для иного/улучшения деша:
+        //запоминай в какую сторону ты в последний раз двигался, и если стоишь на месте и не двигаешься, но нажимаешь дэш, то в ту сторону ты будешь дэшится; тебя будет туда толкать.
+
+        if (Input.GetKey(KeyCode.Space) && !PlayerController.player.isDashing) 
+            PlayerController.player.isDashing = true;
 
         if (PlayerController.player.isDashing)
         {
             if (PlayerController.player.dashTime > 0)
             {
-                PlayerController.player.initialStaticMoveSpeed = lastMoveSpeed * 2;
+                PlayerController.player.maxSpeed = Mathf.Lerp(lastMoveSpeed * 2, lastMoveSpeed, PlayerController.player.dashTime); //более гладкий подьём в скорости
                 PlayerController.player.dashTime -= Time.deltaTime;
                 
                 if (PlayerController.player.dashTime <= 1f/3f)
                     playerMoveTrails.SetActive(true);
 
                 if (PlayerController.player.dashTime <= 0)
-                    PlayerController.player.initialStaticMoveSpeed = lastMoveSpeed;
+                    PlayerController.player.maxSpeed = lastMoveSpeed;
             }
 
             PlayerController.player.imageDashCooldown.fillAmount += 1 / PlayerController.player.dashCooldown * Time.deltaTime;

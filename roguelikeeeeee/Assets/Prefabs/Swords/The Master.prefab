@@ -4821,13 +4821,15 @@ ParticleSystemRenderer:
   m_RenderAlignment: 1
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 0
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
+  m_UseCustomVertexStreams: 0
   m_VertexStreams: 00010304
+  m_UseCustomTrailVertexStreams: 0
+  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -4897,8 +4899,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackCooldown: 1.5
   attackSpeed: 0.2
-  swordWeight: 7
-  swordDamage: 7
+  swordWeight: 5
+  swordDamage: 10
   attackRadius: 4.25
   attackAngle: 135
   rayCount: 9

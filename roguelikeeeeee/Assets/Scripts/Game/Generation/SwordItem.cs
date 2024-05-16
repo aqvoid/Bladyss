@@ -11,7 +11,7 @@ public class SwordItem : MonoBehaviour
     private void Awake()
     {
         hotbarImage = GameObject.Find("SwordOnHotbar").GetComponent<Image>();
-        PlayerController.player.moveSpeedWithoutSword = PlayerController.player.initialStaticMoveSpeed;
+        PlayerController.player.moveSpeedWithoutSword = PlayerController.player.maxSpeed;
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -24,7 +24,7 @@ public class SwordItem : MonoBehaviour
 
                 //slowing down the movement speed because of picking up sword
                 PlayerController.player.moveSpeedWithSword = Mathf.Abs(PlayerController.player.moveSpeedWithoutSword - GameObject.FindGameObjectWithTag("Sword").GetComponent<SwordRaycasting>().swordWeight);
-                PlayerController.player.initialStaticMoveSpeed = PlayerController.player.moveSpeedWithSword;
+                PlayerController.player.maxSpeed = PlayerController.player.moveSpeedWithSword;
                 PlayerSkills.lastMoveSpeed = PlayerController.player.moveSpeedWithSword;
 
                 PlayerController.player.swordEquipped = true;

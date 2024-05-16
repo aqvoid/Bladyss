@@ -75,6 +75,7 @@ public class Rooms : MonoBehaviour
     public GameObject bossRoom;
     public GameObject exitRoom;
     public GameObject swordRoom;
+    public GameObject startRoom;
     public int maxSwordRooms;
     //public GameObject accRoom;
     public GameObject[] randomRooms;
@@ -95,7 +96,7 @@ public class Rooms : MonoBehaviour
     private void Start()
     {
         if (maxSwordRooms == 0) maxRooms = 1;
-        GameObject startRoomInstantiated = Instantiate(rndRooms(), Vector2.zero, Quaternion.identity, transform);
+        GameObject startRoomInstantiated = Instantiate(startRoom, Vector2.zero, Quaternion.identity, transform);
         curRoomPos = startRoomInstantiated.transform.position;
         roomPositions.Add(startRoomInstantiated.transform.position);
         savedRoomPositions.Add(startRoomInstantiated.transform.position);
