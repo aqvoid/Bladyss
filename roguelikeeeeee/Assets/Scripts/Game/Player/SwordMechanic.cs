@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class SwordMechanic : MonoBehaviour
 {
+    private Sprite swordSprite;
+
     private float attackCooldownTimer = 0f;
     private float attackSpeedTimer = 0f;
     private Animator animator;
@@ -27,6 +29,9 @@ public class SwordMechanic : MonoBehaviour
 
     private void Awake()
     {
+        swordSprite = GetComponent<SpriteRenderer>().sprite;
+        GetComponent<SpriteRenderer>().sprite = null;
+
         animator = GetComponentInChildren<Animator>();
         trail = GetComponentInChildren<TrailRenderer>();
         trail.enabled = false;
@@ -61,7 +66,8 @@ public class SwordMechanic : MonoBehaviour
         {
             animator.Play("isAttack");
             currentAttackState = AttackState.Attack;
-            CameraShakerHandler.Shake(shakeEffect); // Attack Effect
+            if (gameObject.name.Substring(0, gameObject.name.Length >= 13 ? 13 : 0) != "FistsChildren")
+                CameraShakerHandler.Shake(shakeEffect); // Attack Effect
 
             // Start the attack speed timer
             attackSpeedTimer = attackSpeed;
@@ -72,6 +78,9 @@ public class SwordMechanic : MonoBehaviour
 
     void Attack()
     {
+        //turn on sword sprite
+        GetComponent<SpriteRenderer>().sprite = swordSprite;
+
         float attackTimeNormalized = 1f - (attackSpeedTimer / attackSpeed);
         animator.SetFloat("AttackTimeNormalized", attackTimeNormalized);
         SwordRaycasting swordRaycastingScript = GetComponentInParent<SwordRaycasting>();
@@ -79,7 +88,7 @@ public class SwordMechanic : MonoBehaviour
         PlayerController.player.WeaponInertia();
 
         if (attackSpeedTimer <= 0f)
-        { 
+        {
             currentAttackState = AttackState.Cooldown;
 
             // Start the attack cooldown timer
@@ -93,6 +102,9 @@ public class SwordMechanic : MonoBehaviour
 
     private void Cooldown()
     {
+        //turn off sword sprite
+        GetComponent<SpriteRenderer>().sprite = null;
+
         animator.Play("isCooldownAttack");
         float cooldownTimeNormalized = 1f - (attackCooldownTimer / attackCooldown);
         animator.SetFloat("CooldownTimeNormalized", cooldownTimeNormalized);

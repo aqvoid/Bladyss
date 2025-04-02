@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public class PlayerSkills : MonoBehaviour
 {
@@ -19,8 +20,38 @@ public class PlayerSkills : MonoBehaviour
         if (!PauseControls.pauseIsOn)
         {
             Dash();
+            //KillEverybody();
+            //TeleportToExit();
         }
     }
+    //Cheat Skills for Debug
+    #region 
+    private void KillEverybody()
+    {
+        if (Input.GetKey(KeyCode.K))
+        {
+            GameObject[] mobsToDelete = GameObject.FindGameObjectsWithTag("Mob");
+            foreach (GameObject mob in mobsToDelete)
+            {
+                Destroy(mob);
+            }
+
+            GameObject[] bossesToDelete = GameObject.FindGameObjectsWithTag("Boss");
+            foreach (GameObject boss in bossesToDelete)
+            {
+                Destroy(boss);
+            }
+        }
+    }
+    
+    private void TeleportToExit()
+    {
+        if (Input.GetKey(KeyCode.T))
+            if(GameObject.FindWithTag("Floor"))
+                PlayerController.player.transform.position = GameObject.FindWithTag("Exit Room").transform.position;
+        
+    }
+    #endregion
 
     private void Dash()
     {
@@ -36,9 +67,11 @@ public class PlayerSkills : MonoBehaviour
             {
                 PlayerController.player.maxSpeed = Mathf.Lerp(lastMoveSpeed * 2, lastMoveSpeed, PlayerController.player.dashTime); //более гладкий подьём в скорости
                 PlayerController.player.dashTime -= Time.deltaTime;
-                
-                if (PlayerController.player.dashTime <= 1f/3f)
+
+                if (PlayerController.player.dashTime <= 1f / 3f)
+                {
                     playerMoveTrails.SetActive(true);
+                }
 
                 if (PlayerController.player.dashTime <= 0)
                     PlayerController.player.maxSpeed = lastMoveSpeed;
@@ -51,6 +84,11 @@ public class PlayerSkills : MonoBehaviour
                 PlayerController.player.isDashing = false;
             }
         }
-        if (!PlayerController.player.isDashing) { PlayerController.player.dashTime = 1f / 3f; playerMoveTrails.SetActive(false); }
+        if (!PlayerController.player.isDashing) 
+        {
+            PlayerController.player.dashTime = 1f / 3f;
+            playerMoveTrails.SetActive(false);
+        }
     }
+
 }

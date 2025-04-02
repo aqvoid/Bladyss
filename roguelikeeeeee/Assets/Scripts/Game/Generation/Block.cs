@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    public Sprite blockSprite1;
-    public Sprite blockSprite2;
-    public Sprite blockSprite3;
+    public Sprite[] blockSprites;
 
     private void Start()
     {
@@ -18,8 +16,8 @@ public class Block : MonoBehaviour
         {
             if (collider.gameObject != gameObject && collider.CompareTag("Block"))
             {
-                //gameObject.SetActive(false);
-                Destroy(gameObject);
+                gameObject.SetActive(false);
+                //Destroy(gameObject);
                 return;
             }
         }
@@ -27,11 +25,7 @@ public class Block : MonoBehaviour
 
     private Sprite rndBlock()
     {
-        int num = Random.Range(1, 4);
-
-        if (num == 1) return blockSprite1;
-        if (num == 2) return blockSprite2;
-        if (num == 3) return blockSprite3;
-        else return blockSprite1;
+        int num = Random.Range(0, blockSprites.Length);
+        return blockSprites[num];
     }
 }

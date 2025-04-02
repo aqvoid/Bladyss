@@ -6,11 +6,11 @@ public class SwordItem : MonoBehaviour
     public Sprite hotbarSprite;
     public Sprite swordHotbarSprite;
     public GameObject spawnedSword;
-    [HideInInspector] public Image hotbarImage;
+    /*[HideInInspector]*/ public Image hotbarImage;
 
     private void Awake()
     {
-        hotbarImage = GameObject.Find("SwordOnHotbar").GetComponent<Image>();
+        hotbarImage = GameObject.Find("SwordOnHotbar").GetComponent<Image>() ? GameObject.Find("SwordOnHotbar").GetComponent<Image>() : null;
         PlayerController.player.moveSpeedWithoutSword = PlayerController.player.maxSpeed;
     }
 
@@ -18,6 +18,7 @@ public class SwordItem : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+
             if (!PlayerController.player.swordEquipped && Input.GetKey(KeyCode.F))
             {
                 Instantiate(spawnedSword, other.transform.position, Quaternion.identity, other.transform);
@@ -29,6 +30,7 @@ public class SwordItem : MonoBehaviour
 
                 PlayerController.player.swordEquipped = true;
                 hotbarImage.sprite = swordHotbarSprite;
+
                 Destroy(gameObject);
             }
         }

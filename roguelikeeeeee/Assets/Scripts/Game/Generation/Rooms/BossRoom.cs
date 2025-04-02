@@ -1,16 +1,17 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossRoom : MonoBehaviour
 {
-    private const string SavedObjectStatesKey = "SavedObjectStates";
+    private const string SAVEDOBJECTSTATESKEY = "SavedObjectStates";
     private bool[] savedObjectStates;
-    private SingleRoom singleRoomScript;
+    private RoomOpener singleRoomScript;
+    public GameObject swordSpawnerGameObject;
+
     [HideInInspector] public bool bossIsAlive;
 
     private void Start()
     {
-        singleRoomScript = GetComponent<SingleRoom>();
+        singleRoomScript = GetComponent<RoomOpener>();
         //2 seconds after scene start - save openings states 
         Invoke("SaveObjectStates", 4f);
     }
@@ -31,7 +32,7 @@ public class BossRoom : MonoBehaviour
 
         for (int i = 0; i < savedObjectStates.Length; i++)
         {
-            PlayerPrefs.SetInt($"{SavedObjectStatesKey}_{i}", savedObjectStates[i] ? 1 : 0);
+            PlayerPrefs.SetInt($"{SAVEDOBJECTSTATESKEY}_{i}", savedObjectStates[i] ? 1 : 0);
         }
 
         PlayerPrefs.Save();
@@ -43,7 +44,7 @@ public class BossRoom : MonoBehaviour
 
         for (int i = 0; i < savedObjectStates.Length; i++)
         {
-            int savedValue = PlayerPrefs.GetInt($"{SavedObjectStatesKey}_{i}", 0);
+            int savedValue = PlayerPrefs.GetInt($"{SAVEDOBJECTSTATESKEY}_{i}", 0);
             savedObjectStates[i] = savedValue == 1;
         }
     }
@@ -59,6 +60,11 @@ public class BossRoom : MonoBehaviour
             {
                 opening.SetActive(true);
             }
+
+            if (!PlayerController.player.swordEquipped)
+                swordSpawnerGameObject.SetActive(true);
+            else
+                swordSpawnerGameObject.SetActive(false);
         }
     }
 

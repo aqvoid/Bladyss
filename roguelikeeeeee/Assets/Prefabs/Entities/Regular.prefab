@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4508021330067651216}
   - component: {fileID: 4508021330067651222}
   - component: {fileID: -7717698133759307939}
-  - component: {fileID: 8856389148066156288}
+  - component: {fileID: 1066370070862003891}
   m_Layer: 6
   m_Name: Regular
   m_TagString: Mob
@@ -109,7 +109,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 136
   predictionTime: 0.5
-  predictionFactor: 0.75
+  predictionFactor: 0.25
   health: 20
   initialSpeed: 5
   onMobDamageCooldownTimer: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!58 &8856389148066156288
+--- !u!58 &1066370070862003891
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

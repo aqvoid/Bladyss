@@ -1,38 +1,52 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PauseControls : MonoBehaviour
 {
     public GameObject pauseMenu;
     public GameObject pauseOptionsMenu;
-    [HideInInspector] static public bool pauseIsOn;
-    [HideInInspector] static public bool pauseOptionsIsOn;
+    [HideInInspector] static public bool pauseIsOn = false;
+    [HideInInspector] static public bool pauseOptionsIsOn = false;
 
-    void Start()
+    private static AudioSource audioSource;
+
+    private SoundManager soundManager;
+
+    private void Awake()
     {
-        pauseIsOn = false;
-        pauseOptionsIsOn = false;
+        soundManager = FindObjectOfType<SoundManager>();
     }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            pauseIsOn = !pauseIsOn;
-            pauseMenu.SetActive(pauseIsOn);
-            pauseOptionsIsOn = !pauseOptionsIsOn;
-            pauseOptionsMenu.SetActive(pauseOptionsIsOn);
+            TogglePauseMenu();
+    }
 
-            pauseMenu.transform.localPosition = new Vector3(0, 0f, pauseMenu.transform.localPosition.z);
-            pauseOptionsMenu.transform.localPosition = new Vector3(-1920f, 0f, pauseOptionsMenu.transform.localPosition.z);
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Pause Options Menu Button"));
+    private void PlayClickSound()
+    {
+        if (soundManager != null)
+            soundManager.PlayClickSound();
+    }
 
-            if (pauseIsOn && pauseOptionsIsOn) Time.timeScale = 0;
-            else Time.timeScale = 1;
-        }
+    private void TogglePauseMenu()
+    {
+        pauseIsOn = !pauseIsOn;
+        pauseMenu.SetActive(pauseIsOn);
+        pauseOptionsIsOn = !pauseOptionsIsOn;
+        pauseOptionsMenu.SetActive(pauseOptionsIsOn);
+
+        pauseMenu.transform.localPosition = new Vector3(0, 0f, pauseMenu.transform.localPosition.z);
+        pauseOptionsMenu.transform.localPosition = new Vector3(-1920f, 0f, pauseOptionsMenu.transform.localPosition.z);
+        EventSystem.current.SetSelectedGameObject(GameObject.Find("Pause Options Menu Button"));
+
+        Time.timeScale = pauseIsOn && pauseOptionsIsOn ? 0 : 1;
     }
 
     public void BackToPause()
     {
+        PlayClickSound();
+
         pauseMenu.transform.localPosition = new Vector3(0, 0f, pauseMenu.transform.localPosition.z);
         pauseOptionsMenu.transform.localPosition = new Vector3(-1920f, 0f, pauseOptionsMenu.transform.localPosition.z);
 
@@ -41,6 +55,8 @@ public class PauseControls : MonoBehaviour
 
     public void PauseOptions()
     {
+        PlayClickSound();
+
         pauseMenu.transform.localPosition = new Vector3(1920, 0f, pauseMenu.transform.localPosition.z);
         pauseOptionsMenu.transform.localPosition = new Vector3(0f, 0f, pauseOptionsMenu.transform.localPosition.z);
 

@@ -1,8 +1,5 @@
 ﻿using System.Collections;
-using Unity.VisualScripting;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Mob : MonoBehaviour
 {
@@ -11,8 +8,8 @@ public class Mob : MonoBehaviour
 
     //вондер надо сделать, чтобы не дёргался когда видит игрока, чтобы не вертелся когда не видит игрока, чтобы медленно туды суды делал когда игрока нет, и всё
     //вондер если игрок не в комнате, иначе нападай на игрока(точнее включай поиск игрока)
-    private float wanderTimer;
-    private bool wanderFlag = false;
+    //private float wanderTimer;
+    //private bool wanderFlag = false;
 
     private float dashTimer;
     //private bool isDashing = false; // можно сделать дэш такой же как у игрока
@@ -68,8 +65,10 @@ public class Mob : MonoBehaviour
         onMobDamageCooldown = 0.5f;
 
         attackRadius = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? attackRadius * 1.5f : attackRadius;
-        farRadius = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? farRadius * 1.5f : farRadius;
-        closeRadius = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? closeRadius * 1.05f : closeRadius;
+        farRadius = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? farRadius * 3f : farRadius;
+        closeRadius = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? closeRadius = 10f : closeRadius;
+        predictionFactor = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? predictionFactor = 0.2f : predictionFactor;
+        predictionTime = transform.name.Substring(0, transform.name.Length >= 12 ? 12 : 0) == "Regular Boss" ? predictionTime = 1f : predictionTime;
     }
 
     private void Update()
@@ -144,8 +143,8 @@ public class Mob : MonoBehaviour
         Collider2D[] collidersInFar = Physics2D.OverlapCircleAll(origin, farRadius);
         Collider2D[] collidersInClose = Physics2D.OverlapCircleAll(origin, closeRadius);
 
-        Vector2 playerVelocity = PlayerController.player.transform.GetComponent<Rigidbody2D>().velocity;
-        Vector2 predictedPlayerPosition = (Vector2)PlayerController.player.transform.position + playerVelocity * predictionTime * predictionFactor;
+        Vector2 playerVelocity = player.transform.GetComponent<Rigidbody2D>().velocity;
+        Vector2 predictedPlayerPosition = (Vector2)player.transform.position + playerVelocity * predictionTime * predictionFactor;
         Vector2 directionToPredictedPosition = (predictedPlayerPosition - origin).normalized;
         float angle = Mathf.Atan2(directionToPredictedPosition.y, directionToPredictedPosition.x) * Mathf.Rad2Deg + 90f;
 
@@ -218,20 +217,23 @@ public class Mob : MonoBehaviour
         }
     }
 
-    IEnumerator Wander()
-    {
-        while (true)
-        {
-            wanderTimer = Random.Range(0.1f, 2.5f);
-            yield return new WaitForSeconds(wanderTimer);
 
-            Vector2 movementDirection = Random.insideUnitCircle.normalized;
-            float angle = Mathf.Atan2(movementDirection.y, movementDirection.x) * Mathf.Rad2Deg + 90f;
+    //IEnumerator Wander()
+    //{
+    //    while (true)
+    //    {
+    //        wanderTimer = Random.Range(0.1f, 2.5f);
 
-            transform.rotation = Quaternion.Euler(0, 0, angle);
-            rb.velocity = movementDirection * initialSpeed;
-        }
-    }
+    //        yield return new WaitForSeconds(wanderTimer);
+
+    //        Vector2 movementDirection = Random.insideUnitCircle.normalized;
+    //        float angle = Mathf.Atan2(movementDirection.y, movementDirection.x) * Mathf.Rad2Deg + 90f;
+
+    //        transform.rotation = Quaternion.Euler(0, 0, angle);
+    //        rb.velocity = movementDirection * initialSpeed;
+    //    }
+    //}
+
 
     private void MobDeath()
     {
@@ -259,5 +261,6 @@ public class Mob : MonoBehaviour
             other.gameObject.GetComponent<Animator>().SetBool("Process", true);
         }
         #endregion
+
     }
 }

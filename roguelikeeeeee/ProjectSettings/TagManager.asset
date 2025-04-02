@@ -14,6 +14,9 @@ TagManager:
   - RoomSpawnPoint
   - Boss
   - RoomMark
+  - Exit Room
+  - SwordSpawner
+  - FloorManager
   layers:
   - Default
   - TransparentFX

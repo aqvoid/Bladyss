@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4508021330067651216}
   - component: {fileID: 4508021330067651222}
   - component: {fileID: -7717698133759307939}
-  - component: {fileID: 4270011958149780646}
+  - component: {fileID: -5864629376751991197}
   m_Layer: 6
   m_Name: Regular Boss
   m_TagString: Boss
@@ -197,7 +197,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!58 &4270011958149780646
+--- !u!58 &-5864629376751991197
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

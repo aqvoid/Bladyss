@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public float dashCooldown = 1.5f;
     [HideInInspector] public float dashTime = 1f / 3f;
 
-    private float smoothTimeToStop; // время остановки, из вычисления ниже получается что чем меньше значение тем больше времени
+    private float smoothTimeToStop; // время остановки, из вычисления ниже получается что чем меньше значение тем больше времени остановка
     private float hitTime = 0.0001f;
     private float hitCooldown = 0.85f;
     private Rigidbody2D rb;
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
             rb.velocity = currentVelocity;
 
             Vector2 playerVelocity = transform.GetComponent<Rigidbody2D>().velocity;
-            Vector2 predictedPlayerPosition = (Vector2)transform.position + playerVelocity * 1 * 1;
+            Vector2 predictedPlayerPosition = (Vector2)transform.position + playerVelocity;
             Vector2 directionToPredictedPosition = (predictedPlayerPosition - (Vector2)transform.position).normalized;
             float angle = Mathf.Atan2(directionToPredictedPosition.y, directionToPredictedPosition.x) * Mathf.Rad2Deg + 90f;
             transform.rotation = Quaternion.Euler(0, 0, angle);
@@ -162,7 +162,6 @@ public class PlayerController : MonoBehaviour
                 if (Time.time > hitTime)
                 {
                     health -= 0.25f;
-                    maxSpeed = Mathf.LerpUnclamped(0f, 10f, Mathf.Clamp01(health));
                     hitTime = Time.time + hitCooldown;
                     GameObject playerHitParticlesPrefabClone = Instantiate(playerHitParticlesPrefab, transform.position, Quaternion.identity, transform.parent);
                     Destroy(playerHitParticlesPrefabClone, 1.5f);
@@ -173,7 +172,6 @@ public class PlayerController : MonoBehaviour
                 if (Time.time > hitTime)
                 {
                     health -= 0.4f;
-                    maxSpeed = Mathf.LerpUnclamped(0f, 10f, Mathf.Clamp01(health));
                     hitTime = Time.time + hitCooldown;
                     GameObject playerHitParticlesPrefabClone = Instantiate(playerHitParticlesPrefab, transform.position, Quaternion.identity, transform.parent);
                     Destroy(playerHitParticlesPrefabClone, 1.5f);

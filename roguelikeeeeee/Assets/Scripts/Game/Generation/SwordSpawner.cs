@@ -6,11 +6,10 @@ public class SwordSpawner : MonoBehaviour
 {
     public GameObject[] randomSwords;
 
-    private void Start()
+    private void Awake()
     {
-        GameObject sword = Instantiate(rndSword(), transform.position, Quaternion.identity, transform);
+        Instantiate(rndSword(), transform.position, Quaternion.identity, transform);
     }
-
     private GameObject rndSword()
     {
         int num = Random.Range(1, 7);

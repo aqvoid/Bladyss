@@ -26,6 +26,7 @@ public class ExitScript : MonoBehaviour
             {
                 exitSpriteRenderer.sprite = exitOpenedSprite;
                 FloorManager.floorNum++;
+
                 floorIncremented = true;
                 //Debug.Log($"Floor Number: {FloorManager.floorNum}");
             }
@@ -50,10 +51,9 @@ public class ExitScript : MonoBehaviour
                 {
                     if (floorManagerScript != null)
                     {
-                        Vector2 playerPos = collider.transform.position;
+                        Vector2 playerPos = PlayerController.player.transform.position;
 
                         floorManagerScript.GenerateFloor(FloorManager.floorNum, playerPos);
-                        PlayerController.player.transform.position = Vector2.zero;
                     }
                 }
             }

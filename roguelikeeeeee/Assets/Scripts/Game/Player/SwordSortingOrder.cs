@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SwordSortingOrder : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class SwordSortingOrder : MonoBehaviour
     void Awake()
     {
         swordRenderer = GetComponentInChildren<SpriteRenderer>();
-        particles = GetComponentInChildren<Transform>().GetComponentInChildren<ParticleSystem>();
+        particles = GetComponentInChildren<Transform>().GetComponentInChildren<ParticleSystem>() ? GetComponentInChildren<Transform>().GetComponentInChildren<ParticleSystem>() : null;
     }
     
     void Update()
@@ -26,25 +27,37 @@ public class SwordSortingOrder : MonoBehaviour
 
         transform.right = lookDir;
 
+        if (particles != null) 
+        {
+            Vector3 psScale = particles.transform.localScale;
+            psScale.x = -1;
+
+            if (lookDir.x < 0)
+            {
+                psScale.y = -1;
+            }
+            else if (lookDir.x > 0)
+            {
+                psScale.y = 1;
+            }
+
+            particles.transform.localScale = psScale;
+        }
+
         Vector3 scale = transform.localScale;
-        Vector3 psScale = particles.transform.localScale;
-        psScale.x = -1;
 
         if (lookDir.x < 0)
         {
             scale.y = -1;
-            psScale.y = -1;
         }
         else if (lookDir.x > 0)
         {
             scale.y = 1;
-            psScale.y = 1;
         }
-
-        particles.transform.localScale = psScale;
+        
         transform.localScale = scale;
 
-        //if looking up = sword is behind player, else = sword is in front of player
+        //if looking up = sword is behind player, down = sword is in front of player
         if (transform.eulerAngles.z > 0 && transform.eulerAngles.z < 180)
         {
             swordRenderer.sortingOrder = 2;

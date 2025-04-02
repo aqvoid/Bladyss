@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7858931635979503523}
   - component: {fileID: 3307702535922335092}
   - component: {fileID: -3646960588186440035}
-  - component: {fileID: 8256926427037369788}
   m_Layer: 0
   m_Name: RoomSpawnPoint
   m_TagString: RoomSpawnPoint
@@ -121,15 +120,3 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &8256926427037369788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7372227248994771984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58d99fe198ef9aa4fa6fdb8db4937a37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
