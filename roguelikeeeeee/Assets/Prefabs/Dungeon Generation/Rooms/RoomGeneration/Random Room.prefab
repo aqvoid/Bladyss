@@ -401,6 +401,7 @@ GameObject:
   - component: {fileID: 6092968568781044969}
   - component: {fileID: 6032806449144470859}
   - component: {fileID: 2159521346630631459}
+  - component: {fileID: 1557213182792688159}
   m_Layer: 0
   m_Name: Random Room
   m_TagString: Room
@@ -489,8 +490,20 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 56, y: 44}
+  m_Size: {x: 52, y: 40}
   m_EdgeRadius: 0
+--- !u!114 &1557213182792688159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6092968568781044968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a1da71c3094484cab0791d57356b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6092968569933023754
 GameObject:
   m_ObjectHideFlags: 0
