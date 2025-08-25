@@ -1,62 +1,18 @@
-﻿using System.Collections;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class ToggleTorches : MonoBehaviour
+public class ToggleTorch : MonoBehaviour
 {
-    public Sprite leftExtinguished, rightExtinguished;
-    public Sprite[] leftFlameSprites, rightFlameSprites;
-    public float frameRate = 0.1f;
-
-    private SpriteRenderer[] torchRenderers;
-    private bool isLit = false;
-
-    private void Awake()
+    // Start is called before the first frame update
+    void Start()
     {
-        torchRenderers = GetComponentsInChildren<SpriteRenderer>();
-        SetExtinguished();
-        Debug.Log($"[ToggleTorches] Найдено {torchRenderers.Length} факелов в {gameObject.name}");
+        
     }
 
-    private void SetExtinguished()
+    // Update is called once per frame
+    void Update()
     {
-        for (int i = 0; i < torchRenderers.Length; i++)
-        {
-            if (i % 2 == 0)
-                torchRenderers[i].sprite = leftExtinguished;
-            else
-                torchRenderers[i].sprite = rightExtinguished;
-        }
-        Debug.Log("[ToggleTorches] Установлены потухшие спрайты");
-    }
-
-    public void TryLightTorches()
-    {
-        if (isLit) return;
-        isLit = true;
-        Debug.Log($"[ToggleTorches] Факела начали зажигаться в {gameObject.name}");
-        StartCoroutine(LightUpWithDelay());
-    }
-
-    private IEnumerator LightUpWithDelay()
-    {
-        for (int i = 0; i < torchRenderers.Length; i++)
-        {
-            //i = every torch sprite slot
-            yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
-            StartCoroutine(AnimateTorch(torchRenderers[i], i % 2 == 0 ? leftFlameSprites : rightFlameSprites));
-        }
-        Debug.Log("[ToggleTorches] Все факела зажглись.");
-    }
-
-    private IEnumerator AnimateTorch(SpriteRenderer renderer, Sprite[] frames)
-    {
-        while (true)
-        {
-            for (int i = 0; i < frames.Length; i++)
-            {
-                renderer.sprite = frames[i];
-                yield return new WaitForSeconds(frameRate);
-            }
-        }
+        
     }
 }
