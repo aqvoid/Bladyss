@@ -2,4 +2,4 @@
 A roguelike game with procedural generation of rooms.
 
 How to install:
-Open zip file and run "Bladyss.exe"
+Open "Bladyss.zip" file in Releases and run "Bladyss.exe"
